@@ -1,7 +1,7 @@
 import os
 
 def get_day_input(day: int) -> list[str] :
-    filename = 'day' + str(day) + '.txt'
+    filename = os.path.sep.join(['inputs', 'day' + str(day) + '.txt'])
     return get_lines(filename)
 
 
