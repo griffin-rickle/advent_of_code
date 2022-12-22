@@ -1,6 +1,6 @@
 import util
 
-needed_consecutive_chars = 4
+needed_consecutive_chars = 14
 data = util.get_day_input(6)[0]
 
 counter: int = 0
