@@ -1,4 +1,3 @@
-import json
 import util
 
 
@@ -27,8 +26,27 @@ def get_common_item_types(compartments: list[str]) -> int:
 
     return to_return
 
+
+def get_common_sack_items(sacks: list[str]) -> list[str]:
+    common_items = []
+    sack_sets: list[set] = []
+    for sack in sacks:
+        sack_sets.append(set([*sack]))
+
+    for sack_item in sack_sets[0]:
+        if sack_item in sack_sets[1] and sack_item in sack_sets[2]:
+            common_items.append(sack_item)
+
+    return common_items
+
+
 sacks = util.get_day_input(3)
 compartments = [get_compartments(sack) for sack in sacks]
 common_item_types = [get_common_item_types(compartment) for compartment in compartments]
+
+print("Part 1:")
 print(sum([sum([get_priority(item_type) for item_type in common_item_type]) for common_item_type in common_item_types]))
 
+print("Part 2:")
+common_items = [get_common_sack_items(sacks[start_idx:start_idx + 3]) for start_idx in range(0, len(sacks), 3)]
+print(sum([get_priority(common_item[0]) for common_item in common_items]))
