@@ -25,8 +25,8 @@ def process_move(stacks_dict: dict[int, list[str]], move: str):
     from_stack = int(match.group(2))
     to_stack = int(match.group(3))
 
-	# Take the needed subset of the array and reverse it
-    top_stack = stacks_dict[from_stack][:num_to_move][::-1]
+	# Take the needed subset of the array
+    top_stack = stacks_dict[from_stack][:num_to_move]
     # Remove them from the original stack
     stacks_dict[from_stack] = stacks_dict[from_stack][num_to_move:]
     # Put them on the front of the current stack
