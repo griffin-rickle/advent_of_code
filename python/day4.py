@@ -11,7 +11,9 @@ for pairing in elf_sections:
     r_low = int(pairing[1].split('-')[0])
     r_high = int(pairing[1].split('-')[1])
 
-    if (l_low <= r_low and l_high >= r_high) or (r_low <= l_low and r_high >= l_high):
+    if (l_low <= r_low and l_high >= r_low):
+        count += 1
+    elif (r_low <= l_low and r_high >= l_low):
         count += 1
 
 print(count)
