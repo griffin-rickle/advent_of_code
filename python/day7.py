@@ -21,7 +21,7 @@ def get_dir_contents(data: list[str], start_index: int) -> (int, dict):
 
 def parse_file_structure(data: list[str]) -> dict:
     file_structure: dict = {}
-    cwd: list[str] = ''
+    cwd: list[str] = []
     curr_counter = 0
     entry = data[curr_counter]
     while curr_counter < len(data):
@@ -29,9 +29,12 @@ def parse_file_structure(data: list[str]) -> dict:
         if split_line[0] == '$':
             if split_line[1] == 'ls':
                 curr_counter, dir_contents = get_dir_contents(data, curr_counter)
-                file_structure[cwd] = dir_contents
+                file_structure['/'.join(cwd)] = dir_contents
             elif split_line[1] == 'cd':
-                cwd = split_line[2]
+                if split_line[2] == '..':
+                    cwd.pop()
+                else:
+                    cwd.append(split_line[2])
                 curr_counter += 1
         if curr_counter < len(data):
             entry = data[curr_counter]
@@ -45,19 +48,14 @@ def get_dir_size(fs, directory):
     for file, size in fs[directory]['files'].items():
         total += size
     for subdir in fs[directory]['dirs']:
-        total += get_dir_size(fs, subdir)
+        total += get_dir_size(fs, '/'.join([directory, subdir]))
     return total
 
 lines = util.get_day_input(7)
 fs = parse_file_structure(lines)
 
-
 sizes = {}
 for directory in fs.keys():
-    file_size = get_dir_size(fs, directory)
     sizes[directory] = get_dir_size(fs, directory)
-    # if file_size <= 100000:
-    print(f'{directory} {file_size}')
-    print(json.dumps(fs[directory], indent=4))
 
 print(sum([sizes[directory] for directory in sizes.keys() if sizes[directory] <= 100000]))
