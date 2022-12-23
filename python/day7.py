@@ -59,3 +59,13 @@ for directory in fs.keys():
     sizes[directory] = get_dir_size(fs, directory)
 
 print(sum([sizes[directory] for directory in sizes.keys() if sizes[directory] <= 100000]))
+
+del_size = sizes['/']
+del_directory = '/'
+needed_space = 70000000 - del_size
+for directory, size in sizes.items():
+    if (directory != '/') and size < del_size and size + needed_space >= 30000000:
+        del_directory = directory
+        del_size = size
+
+print(f'{del_directory} {del_size}')
